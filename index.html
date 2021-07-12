@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hostile Aliens</title>
+  <script src="https://kit.fontawesome.com/822e3a2b1d.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 80px;
+      text-align: center;
+      margin-bottom: 20px;
+      margin-top: 30px;
+      color:rgb(0, 0, 99);
+    }
+    .intro {
+      font-size: 20px;
+      padding: 0px;
+      margin: 0px;
+      margin-bottom: 50px;
+    }
+    .aliens {
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: repeat(7, 1fr);
+      width: 100%;
+    }
+    .ship {
+      padding: 20px;
+      text-align: center;
+      margin: 0px;
+    }
+    .fa-rocket {
+      font-size: 40px;
+      color:darkslategray
+    }
+    .destroyed {
+      color: rgb(255, 0, 0);
+    }
+    #attack {
+      width: 300px;
+      margin: 50px;
+      height: 50px;
+      font-size: 30px;
+      color:aliceblue;
+      background-color: rgb(57, 137, 0);
+    }
+  </style>
+</head>
+<body>
+  <h1>Alien Invasion!</h1>
+  <p class="intro">We need to defend our planet now!</p>
+  <div class="aliens"></div>
+  <button id="attack">Attack!</button>
+  <script>
+    const aliensHtml = document.querySelector(".aliens");
+    const ships = [["MOTHER", 100, 9], ["defence", 80, 10], ["defence", 80, 10], ["defence", 80, 10], ["defence", 80, 10], ["defence", 80, 10], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12], ["attack", 45, 12]];
+    const drawShips = () => {
+      aliensHtml.innerHTML = ships.map(ship => {
+        return `<div class="${ship[0]} ship"><i class="fas fa-rocket"></i><p>${ship[0]} ship</p><p>health still remaining: ${ship[1]}</p></div>`;
+      }).join("");
+    };
+    drawShips();
+    document.querySelector("#attack").addEventListener("click", () => {attack()});
+    const attack = () => {
+      const randomShip = Math.floor(Math.random() * 14);
+      if (ships[randomShip][0] !== "destroyed") {
+        ships[randomShip][1] = ships[randomShip][1] - ships[randomShip][2];
+        if (ships[randomShip][1] <= 0) {
+        ships[randomShip][0] = "destroyed"
+        ships[randomShip][1] = 0;
+        }
+      } else if (ships[randomShip][0] === "destroyed") {
+        attack();
+      }
+      drawShips();
+
+      if (ships[0][1] <= 0) {
+        endGame();
+      }
+    };
+    const endGame = () => {
+      aliensHtml.innerHTML = "Well done! You beat the alliens. CAUTION new wave in 10 seconds";
+      setTimeout(() => {location.reload(true)}, 10000);
+    };
+  </script>
+</body>
+</html>
